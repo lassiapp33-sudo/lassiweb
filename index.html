@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LASSİ — L'app qui connecte Dakar à ses commerces de proximité</title>
+<meta name="description" content="LASSİ est l'application qui connecte les habitants de Dakar aux commerces de proximité : restaurants, coiffeurs, fruiteries, tanganas, boulangeries, sport et plus. Découvre, commande et suis ta commande en temps réel.">
+<meta name="theme-color" content="#0f1628">
+<meta property="og:title" content="LASSİ — L'app qui connecte Dakar à ses commerces de proximité">
+<meta property="og:description" content="Découvre, commande et suis en temps réel les commerces près de toi à Dakar.">
+<meta property="og:image" content="assets/logo/lassi-logo.png">
+<link rel="icon" href="assets/logo/lassi-logo.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo/lassi-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: '#0f1628',
+          'navy-light': '#1a2540',
+          gold: '#FFC107',
+          'gold-light': '#FFD54F',
+        },
+        fontFamily: {
+          display: ['Poppins', 'sans-serif'],
+          body: ['Manrope', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Manrope', sans-serif; }
+  .font-display { font-family: 'Poppins', sans-serif; }
+
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #0f1628; }
+  ::-webkit-scrollbar-thumb { background: #FFC107; border-radius: 10px; }
+
+  /* Animated gold gradient text */
+  .text-shine {
+    background: linear-gradient(90deg, #FFC107, #FFE9A8, #FFC107, #FFD54F);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine {
+    to { background-position: 250% center; }
+  }
+
+  /* Floating mascot animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+    50% { transform: translateY(-22px) rotate(1.5deg); }
+  }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-14px); }
+  }
+  .animate-float-slow { animation: float-slow 5s ease-in-out infinite; }
+  .animate-float-slower { animation: float-slow 7s ease-in-out infinite; }
+
+  /* Background blobs */
+  @keyframes blob {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(40px,-60px) scale(1.15); }
+    66% { transform: translate(-30px,30px) scale(0.9); }
+  }
+  .animate-blob { animation: blob 14s infinite ease-in-out; }
+  .delay-2000 { animation-delay: 2s; }
+  .delay-4000 { animation-delay: 4s; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.show { opacity: 1; transform: translateY(0); }
+
+  /* FAQ accordion */
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-icon { transition: transform 0.3s ease; }
+  .faq-item.active .faq-icon { transform: rotate(45deg); }
+  .faq-item.active .faq-question { color: #FFC107; }
+
+  /* Marquee */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 32s linear infinite; }
+  .marquee-track:hover .animate-marquee { animation-play-state: paused; }
+
+  /* Dotted grid backdrop */
+  .bg-grid {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  /* Category card image zoom */
+  .cat-card img { transition: transform 0.7s ease; }
+  .cat-card:hover img { transform: scale(1.08); }
+
+  /* Phone mockup frame */
+  .phone-frame {
+    border: 10px solid #1a2540;
+    border-radius: 2.25rem;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+</style>
+</head>
+<body class="bg-navy text-white antialiased overflow-x-hidden selection:bg-gold selection:text-navy">
+
+<!-- ============ NAVBAR ============ -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-navy/70 border-b border-white/5">
+  <nav class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
+    <a href="#top" class="flex items-center gap-3">
+      <img src="assets/logo/lassi-logo.png" alt="Logo LASSİ" class="h-11 w-11 rounded-2xl object-cover">
+      <span class="font-display font-extrabold text-2xl tracking-tight">LASS<span class="text-gold">İ</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 font-medium text-white/80 text-sm">
+      <a href="#fonctionnalites" class="hover:text-gold transition">Fonctionnalités</a>
+      <a href="#categories" class="hover:text-gold transition">Catégories</a>
+      <a href="#comment" class="hover:text-gold transition">Comment ça marche</a>
+      <a href="#rejoindre" class="hover:text-gold transition">Prestataires</a>
+      <a href="#faq" class="hover:text-gold transition">FAQ</a>
+    </div>
+    <a href="#telecharger" class="hidden sm:inline-flex items-center gap-2 bg-gold text-navy font-display font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 transition">
+      📲 Télécharger l'app
+    </a>
+    <button id="menuBtn" class="md:hidden p-2 -mr-2 text-white" aria-label="Ouvrir le menu">
+      <svg id="iconMenu" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg id="iconClose" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </nav>
+  <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 bg-navy/95 px-5 pb-6 pt-2">
+    <div class="flex flex-col gap-4 font-medium text-white/80">
+      <a href="#fonctionnalites" class="hover:text-gold transition py-1">Fonctionnalités</a>
+      <a href="#categories" class="hover:text-gold transition py-1">Catégories</a>
+      <a href="#comment" class="hover:text-gold transition py-1">Comment ça marche</a>
+      <a href="#rejoindre" class="hover:text-gold transition py-1">Prestataires</a>
+      <a href="#faq" class="hover:text-gold transition py-1">FAQ</a>
+      <a href="#telecharger" class="inline-flex items-center justify-center gap-2 bg-gold text-navy font-display font-semibold px-5 py-3 rounded-full mt-2">
+        📲 Télécharger l'app
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-gradient-to-br from-navy via-[#141d35] to-navy-light">
+  <div class="absolute inset-0 bg-grid opacity-40 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_30%,#000_40%,transparent_100%)]"></div>
+  <div class="absolute -top-24 -left-24 w-80 h-80 bg-gold/20 rounded-full blur-3xl animate-blob"></div>
+  <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-gold/10 rounded-full blur-3xl animate-blob delay-2000"></div>
+  <div class="absolute top-1/3 right-1/4 w-64 h-64 bg-amber-300/10 rounded-full blur-3xl animate-blob delay-4000"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Texte -->
+    <div class="reveal">
+      <span class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-gold mb-6">
+        🇸🇳 100% pensé pour Dakar
+      </span>
+      <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] mb-6">
+        L'app qui connecte <span class="text-shine">Dakar</span> à ses commerces de proximité
+      </h1>
+      <p class="text-lg text-white/70 mb-8 max-w-xl leading-relaxed">
+        Découvre les restaurants, salons, fruiteries, tanganas, boulangeries et clubs près de toi. Commande, suis ta livraison en temps réel et donne ton avis — tout, en un clic.
+      </p>
+      <div class="flex flex-wrap gap-4 mb-10">
+        <a href="#telecharger" class="inline-flex items-center gap-2 bg-gold text-navy font-display font-semibold px-6 py-3.5 rounded-full hover:bg-gold-light hover:shadow-xl hover:shadow-gold/20 hover:-translate-y-0.5 transition">
+          📲 Télécharger l'app
+        </a>
+        <a href="#comment" class="inline-flex items-center gap-2 border border-white/20 text-white font-display font-semibold px-6 py-3.5 rounded-full hover:bg-white/5 hover:border-gold/40 transition">
+          Comment ça marche ?
+        </a>
+      </div>
+      <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm text-white/60">
+        <div class="flex items-center gap-2"><span class="text-gold text-lg">7</span> univers de services</div>
+        <div class="w-px h-5 bg-white/10 hidden sm:block"></div>
+        <div class="flex items-center gap-2">🗣️ Français &amp; Wolof</div>
+        <div class="w-px h-5 bg-white/10 hidden sm:block"></div>
+        <div class="flex items-center gap-2">💳 Wave &amp; Orange Money</div>
+      </div>
+    </div>
+
+    <!-- Mascotte -->
+    <div class="relative reveal flex justify-center lg:justify-end">
+      <div class="absolute w-72 h-72 sm:w-96 sm:h-96 bg-gold/15 rounded-full blur-3xl"></div>
+      <img src="assets/mascot/roi-lassi.png" alt="Le Roi Lassi, mascotte royale de l'application LASSİ" class="relative z-10 w-64 sm:w-80 lg:w-[26rem] animate-float drop-shadow-2xl">
+
+      <!-- Badges flottants -->
+      <div class="absolute top-6 left-0 sm:left-4 bg-navy-light/90 backdrop-blur border border-white/10 rounded-2xl px-4 py-3 shadow-xl animate-float-slow">
+        <p class="font-display font-bold text-sm">🛵 Suivi en direct</p>
+        <p class="text-xs text-white/50">de ta commande</p>
+      </div>
+      <div class="absolute bottom-10 right-0 sm:-right-4 bg-navy-light/90 backdrop-blur border border-white/10 rounded-2xl px-4 py-3 shadow-xl animate-float-slower">
+        <p class="font-display font-bold text-sm">⭐ Avis vérifiés</p>
+        <p class="text-xs text-white/50">par la communauté</p>
+      </div>
+      <div class="absolute top-1/2 -left-2 sm:left-0 bg-gold text-navy rounded-2xl px-4 py-3 shadow-xl animate-float-slow">
+        <p class="font-display font-bold text-sm">👑 Lassi</p>
+        <p class="text-xs opacity-70">ton guide à Dakar</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marquee catégories -->
+  <div class="marquee-track mt-20 border-t border-white/5 overflow-hidden">
+    <div class="flex w-max animate-marquee py-5 gap-12 text-white/50 font-display font-semibold text-lg whitespace-nowrap">
+      <span>🍽️ Restauration</span>
+      <span>💇🏾 Coiffeurs &amp; Salons</span>
+      <span>🍍 Fruiterie</span>
+      <span>🛒 Commerces &amp; Alimentation</span>
+      <span>☕ Tangana / Ndéki / Soupe</span>
+      <span>🥖 Boulangeries &amp; Pâtisseries</span>
+      <span>⚽ Sport</span>
+      <span>🍽️ Restauration</span>
+      <span>💇🏾 Coiffeurs &amp; Salons</span>
+      <span>🍍 Fruiterie</span>
+      <span>🛒 Commerces &amp; Alimentation</span>
+      <span>☕ Tangana / Ndéki / Soupe</span>
+      <span>🥖 Boulangeries &amp; Pâtisseries</span>
+      <span>⚽ Sport</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FONCTIONNALITÉS ============ -->
+<section id="fonctionnalites" class="py-24 max-w-7xl mx-auto px-5 sm:px-8">
+  <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+    <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">Fonctionnalités</span>
+    <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">Tout Dakar, dans ta poche</h2>
+    <p class="text-white/60 mt-4">Une seule app pour découvrir, commander et suivre tes commerces de proximité préférés, où que tu sois à Dakar.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-6">
+    <!-- Découverte (avec illustration carte) -->
+    <div class="reveal rounded-3xl bg-navy-light/60 border border-white/5 p-8 flex flex-col sm:flex-row items-center gap-8 hover:border-gold/30 transition group">
+      <img src="assets/hero/bee-map.png" alt="Lassi survole une carte de Dakar pour t'aider à découvrir les commerces autour de toi" class="w-44 sm:w-52 rounded-2xl shadow-xl shrink-0 group-hover:-translate-y-1 transition duration-500">
+      <div>
+        <div class="text-3xl mb-3">📍</div>
+        <h3 class="font-display font-bold text-xl mb-2">Découverte près de chez toi</h3>
+        <p class="text-white/60 leading-relaxed">Active ta position et découvre en un instant tous les commerces autour de toi, classés par distance et par catégorie.</p>
+      </div>
+    </div>
+
+    <!-- Commande en ligne -->
+    <div class="reveal delay-100 rounded-3xl bg-navy-light/60 border border-white/5 p-8 hover:border-gold/30 hover:-translate-y-1 transition">
+      <div class="text-3xl mb-3">🛍️</div>
+      <h3 class="font-display font-bold text-xl mb-2">Commande en ligne</h3>
+      <p class="text-white/60 leading-relaxed">Parcours les menus et produits, ajoute au panier, choisis « sur place » ou « à emporter » et valide en quelques secondes.</p>
+    </div>
+
+    <!-- Suivi temps réel -->
+    <div class="reveal rounded-3xl bg-navy-light/60 border border-white/5 p-8 hover:border-gold/30 hover:-translate-y-1 transition">
+      <div class="text-3xl mb-3">🚴</div>
+      <h3 class="font-display font-bold text-xl mb-2">Suivi en temps réel</h3>
+      <p class="text-white/60 leading-relaxed">Suis la préparation puis la livraison de ta commande, en direct sur la carte, jusqu'à ta porte.</p>
+    </div>
+
+    <!-- Avis & notes -->
+    <div class="reveal delay-100 rounded-3xl bg-navy-light/60 border border-white/5 p-8 hover:border-gold/30 hover:-translate-y-1 transition">
+      <div class="text-3xl mb-3">⭐</div>
+      <h3 class="font-display font-bold text-xl mb-2">Avis &amp; notes</h3>
+      <p class="text-white/60 leading-relaxed">Consulte les avis de la communauté avant de choisir, et partage ton expérience pour aider les autres Dakarois.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHATBOT WOLOF ============ -->
+<section class="py-24 bg-navy-light/40 border-y border-white/5 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Téléphone -->
+    <div class="relative reveal flex justify-center order-1">
+      <div class="absolute w-72 h-72 bg-gold/10 rounded-full blur-3xl"></div>
+      <div class="phone-frame relative z-10 w-[260px] sm:w-[300px] overflow-hidden bg-navy-light">
+        <img src="assets/app/screen-chat.jpeg" alt="Capture d'écran de l'assistant Lassi dans l'application, qui répond en français et en wolof" class="w-full h-auto">
+      </div>
+      <img src="assets/mascot/lassi-explorer.png" alt="Lassi explorateur, l'assistant chatbot de l'application" class="absolute -bottom-6 -left-2 sm:-left-10 w-32 sm:w-40 animate-float-slow drop-shadow-2xl z-20">
+    </div>
+
+    <!-- Texte -->
+    <div class="reveal order-2">
+      <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">Assistant intelligent</span>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3 mb-6">Lassi te répond, même en wolof 🇸🇳</h2>
+      <p class="text-white/60 mb-8 leading-relaxed">
+        Une question sur l'app, une commande ou un commerce ? Notre assistant Lassi comprend le français et le wolof, et te guide 24h/24 — directement dans l'application.
+      </p>
+      <ul class="space-y-4 text-white/80">
+        <li class="flex items-start gap-3"><span class="text-gold text-lg">✅</span> Réponses instantanées à tes questions</li>
+        <li class="flex items-start gap-3"><span class="text-gold text-lg">✅</span> Recherche de commerces par mots-clés</li>
+        <li class="flex items-start gap-3"><span class="text-gold text-lg">✅</span> Comprend le français et le wolof</li>
+        <li class="flex items-start gap-3"><span class="text-gold text-lg">✅</span> Disponible directement dans l'app, sans inscription</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATÉGORIES ============ -->
+<section id="categories" class="py-24 max-w-7xl mx-auto px-5 sm:px-8">
+  <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+    <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">7 univers de proximité</span>
+    <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">Tout ce dont Dakar a besoin, au même endroit</h2>
+    <p class="text-white/60 mt-4">Des restos aux salons de coiffure, des fruiteries aux clubs de sport — LASSİ rassemble les meilleurs prestataires de ton quartier.</p>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
+    <!-- Restauration (carte vedette) -->
+    <a href="#" class="cat-card group relative col-span-2 aspect-[2/1] rounded-3xl overflow-hidden reveal">
+      <img src="assets/categories/restauration.png" alt="Restaurant au bord de la plage à Dakar au coucher du soleil" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-4 sm:p-6">
+        <span class="text-2xl sm:text-3xl">🍽️</span>
+        <h3 class="font-display font-bold text-lg sm:text-2xl mt-1">Restauration</h3>
+        <p class="text-white/70 text-xs sm:text-sm">Restos &amp; Boissons</p>
+      </div>
+    </a>
+
+    <!-- Coiffeurs & Salons -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal delay-100">
+      <img src="assets/categories/coiffeurs.png" alt="Salon de coiffure et barbier moderne à Dakar" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">💇🏾</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Coiffeurs &amp; Salons</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Beauté &amp; style</p>
+      </div>
+    </a>
+
+    <!-- Fruiterie -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal">
+      <img src="assets/categories/fruiterie.png" alt="Étal de fruiterie avec fruits frais et marinés au Sénégal" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">🍍</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Fruiterie</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Fruits frais du jour</p>
+      </div>
+    </a>
+
+    <!-- Commerces & Alimentation -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal delay-100">
+      <img src="assets/categories/commerces.png" alt="Boutique de quartier et alimentation générale à Dakar" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">🛒</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Commerces &amp; Alimentation</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Boutiques de quartier</p>
+      </div>
+    </a>
+
+    <!-- Tangana / Ndéki / Soupe -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal">
+      <img src="assets/categories/tangana.png" alt="Tangana, restaurant de rue traditionnel à Dakar" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">☕</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Tangana / Ndéki / Soupe</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Petits-déj' de rue</p>
+      </div>
+    </a>
+
+    <!-- Boulangeries -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal delay-100">
+      <img src="assets/categories/boulangerie.png" alt="Boulangerie moderne avec pains et viennoiseries" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">🥖</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Boulangeries &amp; Pâtisseries</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Pain chaud &amp; douceurs</p>
+      </div>
+    </a>
+
+    <!-- Sport -->
+    <a href="#" class="cat-card group relative col-span-1 aspect-square rounded-3xl overflow-hidden reveal">
+      <img src="assets/categories/sport.png" alt="Match de football nocturne sur un terrain à Dakar" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-3 sm:p-5">
+        <span class="text-xl sm:text-2xl">⚽</span>
+        <h3 class="font-display font-bold text-sm sm:text-lg mt-1">Sport</h3>
+        <p class="text-white/70 text-xs hidden sm:block">Clubs &amp; terrains</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ============ COMMENT ÇA MARCHE ============ -->
+<section id="comment" class="py-24 bg-navy-light/40 border-y border-white/5 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Texte / étapes -->
+    <div class="order-2 lg:order-1 reveal">
+      <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">Comment ça marche</span>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3 mb-10">4 étapes pour profiter de Dakar</h2>
+      <div class="space-y-6">
+        <div class="flex gap-5">
+          <div class="shrink-0 w-12 h-12 rounded-2xl bg-gold text-navy font-display font-bold flex items-center justify-center text-lg">1</div>
+          <div>
+            <h3 class="font-display font-bold text-lg mb-1">📍 Active ta position</h3>
+            <p class="text-white/60 leading-relaxed">Découvre instantanément les commerces autour de toi, triés par distance et par catégorie.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="shrink-0 w-12 h-12 rounded-2xl bg-gold text-navy font-display font-bold flex items-center justify-center text-lg">2</div>
+          <div>
+            <h3 class="font-display font-bold text-lg mb-1">🛍️ Choisis &amp; commande</h3>
+            <p class="text-white/60 leading-relaxed">Parcours la vitrine du commerçant, ajoute tes articles au panier et choisis « sur place » ou « à emporter ».</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="shrink-0 w-12 h-12 rounded-2xl bg-gold text-navy font-display font-bold flex items-center justify-center text-lg">3</div>
+          <div>
+            <h3 class="font-display font-bold text-lg mb-1">💳 Paie facilement</h3>
+            <p class="text-white/60 leading-relaxed">Règle ta commande en toute sécurité via Wave ou Orange Money, directement depuis l'app.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="shrink-0 w-12 h-12 rounded-2xl bg-gold text-navy font-display font-bold flex items-center justify-center text-lg">4</div>
+          <div>
+            <h3 class="font-display font-bold text-lg mb-1">🚴 Suis &amp; note</h3>
+            <p class="text-white/60 leading-relaxed">Suis ta commande en temps réel sur la carte, puis donne ton avis pour aider la communauté.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Téléphone -->
+    <div class="order-1 lg:order-2 relative reveal flex justify-center">
+      <div class="absolute w-72 h-72 sm:w-96 sm:h-96 bg-gold/10 rounded-full blur-3xl"></div>
+      <div class="phone-frame relative z-10 w-[260px] sm:w-[300px] overflow-hidden bg-navy-light">
+        <img src="assets/app/screen-categorie.jpeg" alt="Capture d'écran de la catégorie Restos & Boissons dans l'application LASSİ" class="w-full h-auto">
+      </div>
+      <img src="assets/mascot/roi-lassi-wave.png" alt="Le Roi Lassi te salue et te guide dans l'application" class="absolute -bottom-10 -right-4 sm:-right-12 w-36 sm:w-48 animate-float-slow drop-shadow-2xl z-20">
+    </div>
+  </div>
+</section>
+
+<!-- ============ REJOINDRE / TÉLÉCHARGER + PRESTATAIRES ============ -->
+<section id="rejoindre" class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-navy via-[#141d35] to-navy-light"></div>
+  <div class="absolute top-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-blob"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 bg-gold/10 rounded-full blur-3xl animate-blob delay-2000"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">Rejoins LASSİ</span>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">Le royaume LASSİ t'attend 👑</h2>
+      <p class="text-white/60 mt-4">Que tu sois un client curieux ou un prestataire de service, il y a une place pour toi dans le royaume LASSİ.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <!-- Mascotte centrale -->
+      <div class="relative flex justify-center order-1 lg:order-2 reveal">
+        <div class="absolute w-72 h-72 sm:w-96 sm:h-96 bg-gold/15 rounded-full blur-3xl"></div>
+        <img src="assets/mascot/roi-lassi-wave.png" alt="Le Roi Lassi accueille les clients et les prestataires dans le royaume LASSİ" class="relative z-10 w-64 sm:w-80 animate-float drop-shadow-2xl">
+      </div>
+
+      <div class="order-2 lg:order-1 grid sm:grid-cols-2 gap-6">
+        <!-- Pour les clients -->
+        <div id="telecharger" class="reveal rounded-3xl bg-navy-light/60 border border-white/5 p-8 hover:border-gold/30 transition">
+          <div class="text-3xl mb-3">📱</div>
+          <h3 class="font-display font-bold text-xl mb-2">Pour les clients</h3>
+          <p class="text-white/60 mb-6 leading-relaxed">Télécharge l'application et découvre dès aujourd'hui les commerces près de toi.</p>
+          <div class="flex flex-col gap-3">
+            <a href="#" class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 hover:border-gold/40 hover:bg-white/10 transition">
+              <svg class="w-6 h-6 text-gold shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v12.59l3.3-3.3a1 1 0 011.4 1.42l-5 5a1 1 0 01-1.4 0l-5-5a1 1 0 011.4-1.42l3.3 3.3V3a1 1 0 011-1zM4 19a1 1 0 011 1v1h14v-1a1 1 0 112 0v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a1 1 0 011-1z"/></svg>
+              <div>
+                <p class="text-xs text-white/50 leading-none">Télécharger sur</p>
+                <p class="font-display font-semibold leading-tight">App Store</p>
+              </div>
+            </a>
+            <a href="#" class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 hover:border-gold/40 hover:bg-white/10 transition">
+              <svg class="w-6 h-6 text-gold shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a1 1 0 011 1v12.59l3.3-3.3a1 1 0 011.4 1.42l-5 5a1 1 0 01-1.4 0l-5-5a1 1 0 011.4-1.42l3.3 3.3V3a1 1 0 011-1zM4 19a1 1 0 011 1v1h14v-1a1 1 0 112 0v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1a1 1 0 011-1z"/></svg>
+              <div>
+                <p class="text-xs text-white/50 leading-none">Disponible sur</p>
+                <p class="font-display font-semibold leading-tight">Google Play</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Pour les prestataires -->
+        <div class="reveal delay-100 rounded-3xl bg-navy-light/60 border border-white/5 p-8 hover:border-gold/30 transition">
+          <div class="text-3xl mb-3">🏪</div>
+          <h3 class="font-display font-bold text-xl mb-2">Pour les prestataires</h3>
+          <p class="text-white/60 mb-6 leading-relaxed">Restaurateur, coiffeur, fruitier, boulanger... Rejoins LASSİ et fais découvrir ton commerce à tout Dakar.</p>
+          <a href="mailto:lassiapp33@gmail.com" class="inline-flex items-center gap-2 bg-gold text-navy font-display font-semibold px-6 py-3 rounded-full hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 transition">
+            👑 Devenir partenaire
+          </a>
+          <p class="text-white/40 text-sm mt-4">Ou contacte-nous sur WhatsApp : <a href="https://wa.me/22176189003" class="text-gold hover:underline">+221 76 189 00 03</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="py-24 max-w-3xl mx-auto px-5 sm:px-8">
+  <div class="text-center mb-16 reveal">
+    <span class="text-gold font-display font-semibold uppercase tracking-wider text-sm">Aide &amp; FAQ</span>
+    <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">Questions fréquentes</h2>
+    <p class="text-white/60 mt-4">Tout ce qu'il faut savoir pour bien démarrer avec LASSİ.</p>
+  </div>
+
+  <div class="space-y-4">
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment fonctionne LASSİ ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">LASSİ est une application qui géolocalise les commerces de proximité autour de toi (restaurants, coiffeurs, fruiteries, boutiques, tanganas, boulangeries, clubs de sport...). Tu peux parcourir leurs vitrines, passer commande ou réserver, payer via Wave ou Orange Money, puis suivre ta commande en temps réel.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment créer un compte ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">Télécharge l'application, ouvre-la puis appuie sur « Créer un compte ». Renseigne ton numéro de téléphone, valide le code reçu par SMS et complète ton profil. C'est gratuit et ça prend moins d'une minute.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment passer une commande ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">Ouvre la vitrine du commerçant, choisis tes produits, ajoute-les au panier puis valide. Choisis « Sur place » ou « À emporter » pour la nourriture, paie via Wave ou Orange Money, et c'est fait ! Le commerçant reçoit ta commande directement.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment devenir prestataire/partenaire sur LASSİ ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">Rends-toi dans la section « Pour les prestataires » de ce site et écris-nous par email ou WhatsApp. Notre équipe te recontacte pour créer la vitrine de ton commerce, ajouter tes produits et te former à la réception des commandes.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment contacter le support ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">
+          Par email à <a href="mailto:lassiapp33@gmail.com" class="text-gold hover:underline">lassiapp33@gmail.com</a> ou par WhatsApp au <a href="https://wa.me/22176189003" class="text-gold hover:underline">+221 76 189 00 03</a>. Notre équipe te répond le plus rapidement possible.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal rounded-2xl bg-navy-light/60 border border-white/5 overflow-hidden">
+      <button class="faq-question w-full flex items-center justify-between gap-4 text-left p-6 font-display font-semibold text-lg transition">
+        Comment supprimer mon compte / mes données ?
+        <span class="faq-icon text-gold text-2xl shrink-0">+</span>
+      </button>
+      <div class="faq-answer px-6">
+        <p class="text-white/60 pb-6 leading-relaxed">Va dans « Profil » → « Paramètres du compte » → « Supprimer mon compte ». Tu peux aussi envoyer une demande à <a href="mailto:lassiapp33@gmail.com" class="text-gold hover:underline">lassiapp33@gmail.com</a> avec ton numéro de téléphone : ton compte et tes données personnelles seront supprimés conformément à notre <a href="privacy.html" class="text-gold hover:underline">politique de confidentialité</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-12 reveal">
+    <p class="text-white/60 mb-4">Tu n'as pas trouvé ta réponse ?</p>
+    <a href="mailto:lassiapp33@gmail.com" class="inline-flex items-center gap-2 border border-white/20 text-white font-display font-semibold px-6 py-3 rounded-full hover:bg-white/5 hover:border-gold/40 transition">
+      ✉️ Contactez-nous
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-white/5 bg-navy-light/30">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-12">
+    <div class="lg:col-span-1">
+      <a href="#top" class="flex items-center gap-3 mb-4">
+        <img src="assets/logo/lassi-logo.png" alt="Logo LASSİ" class="h-11 w-11 rounded-2xl object-cover">
+        <span class="font-display font-extrabold text-2xl tracking-tight">LASS<span class="text-gold">İ</span></span>
+      </a>
+      <p class="text-white/50 text-sm leading-relaxed mb-5">L'application qui connecte Dakar à ses commerces de proximité.</p>
+      <div class="flex gap-3">
+        <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:border-gold/40 hover:text-gold transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:border-gold/40 hover:text-gold transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path d="M14 9h2V6h-2c-1.66 0-3 1.34-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9z"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:border-gold/40 hover:text-gold transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path d="M16 3v9.5a3.5 3.5 0 11-3.5-3.5"/><path d="M16 3c0 2.5 2 4.5 4.5 4.5"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-display font-semibold mb-4">Navigation</h3>
+      <ul class="space-y-2 text-white/50 text-sm">
+        <li><a href="#fonctionnalites" class="hover:text-gold transition">Fonctionnalités</a></li>
+        <li><a href="#categories" class="hover:text-gold transition">Catégories</a></li>
+        <li><a href="#comment" class="hover:text-gold transition">Comment ça marche</a></li>
+        <li><a href="#rejoindre" class="hover:text-gold transition">Devenir prestataire</a></li>
+        <li><a href="#faq" class="hover:text-gold transition">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-display font-semibold mb-4">Légal</h3>
+      <ul class="space-y-2 text-white/50 text-sm">
+        <li><a href="privacy.html" class="hover:text-gold transition">Politique de confidentialité</a></li>
+        <li>NINEA : 013082079</li>
+        <li>RCCM : SN DKR 2026 A 19335</li>
+        <li>Nom légal : COULIBALY LASSANA</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-display font-semibold mb-4">Contact</h3>
+      <ul class="space-y-2 text-white/50 text-sm">
+        <li><a href="mailto:lassiapp33@gmail.com" class="hover:text-gold transition">lassiapp33@gmail.com</a></li>
+        <li><a href="https://wa.me/22176189003" class="hover:text-gold transition">WhatsApp : +221 76 189 00 03</a></li>
+        <li>Guédiawaye Golf Sud Fith Mith, Dakar, Sénégal</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/5 py-6">
+    <p class="text-center text-white/40 text-sm px-5">© 2026 LASSİ — Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script>
+  // Menu mobile
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const iconMenu = document.getElementById('iconMenu');
+  const iconClose = document.getElementById('iconClose');
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    iconMenu.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobileMenu a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      iconMenu.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    });
+  });
+
+  // Accordéon FAQ
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(other => {
+        other.classList.remove('active');
+        other.querySelector('.faq-answer').style.maxHeight = null;
+      });
+      if (!isActive) {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Animations au scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
