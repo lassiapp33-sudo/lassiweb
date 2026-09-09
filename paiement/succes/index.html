@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LASSI — Paiement confirmé</title>
+  <style>
+    body { margin: 0; background: #14152A; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .box { text-align: center; color: #FDCF34; padding: 32px; }
+    h2 { margin: 12px 0 0; }
+    p { color: #9A9EC4; margin-top: 12px; font-size: 14px; }
+    a { display: inline-block; margin-top: 24px; background: #FDCF34; color: #14152A; padding: 14px 28px; border-radius: 14px; font-weight: bold; text-decoration: none; }
+  </style>
+  <script>
+    // Repli : ce script ne s'exécute QUE si l'Universal Link n'a pas ouvert LASSI
+    // (iOS avec AASA à jour ouvre l'app AVANT de charger cette page).
+    window.onload = function () {
+      window.location.replace('lassiapp://paiement/succes' + window.location.search);
+    };
+  </script>
+</head>
+<body>
+  <div class="box">
+    <div style="font-size:48px">✅</div>
+    <h2>Paiement confirmé</h2>
+    <p>Retourne dans l'application LASSI.</p>
+    <a href="javascript:void(0)" onclick="window.location.replace('lassiapp://paiement/succes' + window.location.search)">Ouvrir LASSI</a>
+  </div>
+</body>
+</html>
