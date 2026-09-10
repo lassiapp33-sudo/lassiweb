@@ -1,0 +1,14 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lassiapp.lassiapp",
+      "sha256_cert_fingerprints": [
+        "A7:31:A9:26:CE:D6:79:EA:20:52:4D:23:A4:65:56:95:27:99:60:AF:30:54:31:B3:3E:BA:E4:8A:11:90:89:75",
+        "26:54:E7:8B:65:E2:78:D6:C0:73:DD:CC:06:71:42:E7:BB:60:4C:64:BC:D7:41:28:99:68:60:BE:02:CA:9F:F6",
+        "6E:38:F1:33:BD:C2:DF:BF:3D:36:DB:E5:94:58:AE:84:4A:7C:8F:1E:AA:33:78:F9:68:8C:60:71:FC:00:D5:C6"
+      ]
+    }
+  }
+]
