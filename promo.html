@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#14152A">
+<title>Lassi — Ton quartier à portée de main</title>
+<meta name="description" content="Lassi connecte les habitants de Dakar aux commerces, services et bons plans de leur quartier. Télécharge l'app gratuitement.">
+<style>
+  :root{
+    --dark:#14152A;
+    --gold:#FDCF34;
+    --light:#FFFFFF;
+    --muted:rgba(255,255,255,.72);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 120% at 50% 0%, #1d1f3e 0%, var(--dark) 55%, #0d0e1c 100%);
+    color:var(--light);
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:32px 22px calc(32px + env(safe-area-inset-bottom));
+    text-align:center;
+  }
+  .wrap{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:26px}
+
+  /* En-tête / logo */
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand-mark{
+    width:52px;height:52px;border-radius:15px;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:28px;color:var(--dark);
+    box-shadow:0 10px 30px rgba(253,207,52,.35);
+  }
+  .brand-name{font-size:30px;font-weight:800;letter-spacing:.5px}
+  .brand-name span{color:var(--gold)}
+
+  /* Accroche */
+  h1{
+    font-size:30px;line-height:1.2;font-weight:800;
+    margin-top:4px;
+  }
+  h1 b{color:var(--gold)}
+  .sub{font-size:16px;line-height:1.5;color:var(--muted);max-width:340px}
+
+  /* Badges confiance */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .pill{
+    font-size:12.5px;font-weight:600;color:var(--light);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    padding:7px 13px;border-radius:999px;
+  }
+
+  /* Boutons stores */
+  .cta{display:flex;flex-direction:column;gap:14px;width:100%;margin-top:2px}
+  .store{
+    display:flex;align-items:center;gap:14px;
+    width:100%;
+    background:#000;
+    color:#fff;
+    text-decoration:none;
+    padding:13px 20px;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,.14);
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .store:active{transform:scale(.97)}
+  .store svg{width:30px;height:30px;flex:0 0 auto;fill:#fff}
+  .store .txt{display:flex;flex-direction:column;text-align:left;line-height:1.1}
+  .store .txt small{font-size:11px;color:rgba(255,255,255,.8);font-weight:500}
+  .store .txt strong{font-size:18px;font-weight:700;margin-top:2px}
+
+  .store.primary{
+    background:var(--gold);color:var(--dark);border-color:transparent;
+    box-shadow:0 10px 30px rgba(253,207,52,.4);
+  }
+  .store.primary svg{fill:var(--dark)}
+  .store.primary .txt small{color:rgba(20,21,42,.75)}
+
+  .foot{font-size:12px;color:rgba(255,255,255,.5);margin-top:8px}
+</style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- EN-TÊTE : remplace .brand-mark par <img src="logo.png"> si besoin -->
+    <header class="brand">
+      <div class="brand-mark">L</div>
+      <div class="brand-name">LASS<span>İ</span></div>
+    </header>
+
+    <!-- ACCROCHE -->
+    <div>
+      <h1>Ton quartier, <b>à portée de main.</b></h1>
+      <p class="sub">Commerces, services et bons plans près de chez toi à Dakar. Commande, réserve et paie en quelques secondes.</p>
+    </div>
+
+    <div class="pills">
+      <span class="pill">🛍️ Commerces locaux</span>
+      <span class="pill">⚡ Paiement instantané</span>
+      <span class="pill">📍 Autour de toi</span>
+    </div>
+
+    <!-- BOUTONS DE TÉLÉCHARGEMENT -->
+    <div class="cta">
+
+      <!-- App Store -->
+      <a class="store primary" href="https://apps.apple.com/app/id6802453488">
+        <svg viewBox="0 0 24 24"><path d="M16.365 1.43c0 1.14-.417 2.2-1.25 3.06-.95.99-2.08 1.56-3.2 1.47-.14-1.09.43-2.26 1.22-3.05.89-.9 2.33-1.57 3.23-1.48zM20.9 17.1c-.55 1.27-.81 1.83-1.52 2.96-.99 1.57-2.38 3.53-4.1 3.54-1.53.02-1.92-.99-4-.98-2.08.01-2.51 1-4.04.97-1.72-.01-3.04-1.77-4.03-3.34C-.5 16.73-.78 11.08 1.38 8.17c1.07-1.46 2.76-2.38 4.36-2.38 1.63 0 2.66 1 4.01 1 1.31 0 2.11-1 4-1 1.43 0 2.94.78 4.02 2.12-3.53 1.94-2.95 6.98 1.13 9.19z"/></svg>
+        <span class="txt"><small>Télécharger dans l'</small><strong>App Store</strong></span>
+      </a>
+
+      <!-- Google Play -->
+      <a class="store" href="https://play.google.com/store/apps/details?id=com.lassiapp.lassiapp">
+        <svg viewBox="0 0 24 24"><path d="M3.6 1.8c-.32.34-.51.86-.51 1.53v17.34c0 .67.19 1.19.53 1.52l.06.05L13.5 12.4v-.23L3.68 1.75l-.08.05z" fill="#00D0FF"/><path d="M17.2 15.7l-3.7-3.3v-.24l3.7-3.3.08.05 4.37 2.48c1.25.71 1.25 1.87 0 2.58l-4.37 2.48-.08.02z" fill="#FFCE00"/><path d="M17.28 15.65l-3.78-3.38L3.6 22.2c.41.44 1.09.49 1.86.06l11.82-6.61" fill="#FF3A44"/><path d="M17.28 8.9L5.46 2.3C4.69 1.86 4.01 1.92 3.6 2.36l9.9 9.91 3.78-3.37z" fill="#00F076"/></svg>
+        <span class="txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+      </a>
+
+    </div>
+
+    <p class="foot">Gratuit · Sénégal 🇸🇳 · Lassi</p>
+
+  </main>
+</body>
+</html>
