@@ -53,19 +53,41 @@
   /* Boutons stores (gros, centrés) */
   .cta{display:flex;flex-direction:column;gap:14px;width:100%;margin-top:6px}
   .store{
+    position:relative;
     display:flex;align-items:center;justify-content:center;gap:14px;
     width:100%;background:#000;color:#fff;text-decoration:none;
     padding:15px 22px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
     transition:transform .15s ease;box-shadow:0 8px 24px rgba(0,0,0,.35);
+    animation:pulseDark 2.4s ease-in-out infinite;
   }
   .store:active{transform:scale(.97)}
   .store svg{width:32px;height:32px;flex:0 0 auto;fill:#fff}
   .store .txt{display:flex;flex-direction:column;text-align:left;line-height:1.1}
   .store .txt small{font-size:11px;color:rgba(255,255,255,.8);font-weight:500}
   .store .txt strong{font-size:19px;font-weight:700;margin-top:2px}
-  .store.primary{background:var(--gold);color:var(--dark);border-color:transparent;box-shadow:0 10px 30px rgba(253,207,52,.4)}
+  .store.primary{background:var(--gold);color:var(--dark);border-color:transparent;box-shadow:0 10px 30px rgba(253,207,52,.4);animation:pulseGold 2.4s ease-in-out infinite .4s}
   .store.primary svg{fill:var(--dark)}
   .store.primary .txt small{color:rgba(20,21,42,.75)}
+
+  /* Doigt animé qui pointe vers le bouton */
+  .store svg.finger{
+    position:absolute;right:16px;top:50%;
+    width:46px;height:30px;margin-top:-15px;
+    pointer-events:none;
+    animation:point 1.1s ease-in-out infinite;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.45));
+  }
+  /* Pulsations "boutons vivants" */
+  @keyframes pulseGold{
+    0%,100%{box-shadow:0 10px 30px rgba(253,207,52,.4), 0 0 0 0 rgba(253,207,52,.55)}
+    50%{box-shadow:0 10px 30px rgba(253,207,52,.4), 0 0 0 16px rgba(253,207,52,0)}
+  }
+  @keyframes pulseDark{
+    0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.35), 0 0 0 0 rgba(255,255,255,.35)}
+    50%{box-shadow:0 8px 24px rgba(0,0,0,.35), 0 0 0 16px rgba(255,255,255,0)}
+  }
+  @keyframes point{ 0%,100%{transform:translateX(0)} 50%{transform:translateX(-10px)} }
+  @media (prefers-reduced-motion:reduce){ .store,.store.primary,.store svg.finger{animation:none} }
 
   .foot{font-size:12.5px;color:rgba(255,255,255,.5);margin-top:10px;line-height:1.7}
   .foot a{color:rgba(255,255,255,.7);text-decoration:none}
@@ -92,11 +114,13 @@
       <a class="store primary" href="https://apps.apple.com/app/id6802453488">
         <svg viewBox="0 0 24 24"><path d="M16.365 1.43c0 1.14-.417 2.2-1.25 3.06-.95.99-2.08 1.56-3.2 1.47-.14-1.09.43-2.26 1.22-3.05.89-.9 2.33-1.57 3.23-1.48zM20.9 17.1c-.55 1.27-.81 1.83-1.52 2.96-.99 1.57-2.38 3.53-4.1 3.54-1.53.02-1.92-.99-4-.98-2.08.01-2.51 1-4.04.97-1.72-.01-3.04-1.77-4.03-3.34C-.5 16.73-.78 11.08 1.38 8.17c1.07-1.46 2.76-2.38 4.36-2.38 1.63 0 2.66 1 4.01 1 1.31 0 2.11-1 4-1 1.43 0 2.94.78 4.02 2.12-3.53 1.94-2.95 6.98 1.13 9.19z"/></svg>
         <span class="txt"><small>Télécharger dans l'</small><strong>App Store</strong></span>
+        <svg class="finger" viewBox="0 0 64 44" aria-hidden="true"><rect x="26" y="5" width="34" height="34" rx="13"/><rect x="2" y="16" width="40" height="12" rx="6"/><rect x="30" y="3" width="12" height="12" rx="5"/></svg>
       </a>
 
       <a class="store" href="https://play.google.com/store/apps/details?id=com.lassiapp.lassiapp">
         <svg viewBox="0 0 24 24"><path d="M3.6 1.8c-.32.34-.51.86-.51 1.53v17.34c0 .67.19 1.19.53 1.52l.06.05L13.5 12.4v-.23L3.68 1.75l-.08.05z" fill="#00D0FF"/><path d="M17.2 15.7l-3.7-3.3v-.24l3.7-3.3.08.05 4.37 2.48c1.25.71 1.25 1.87 0 2.58l-4.37 2.48-.08.02z" fill="#FFCE00"/><path d="M17.28 15.65l-3.78-3.38L3.6 22.2c.41.44 1.09.49 1.86.06l11.82-6.61" fill="#FF3A44"/><path d="M17.28 8.9L5.46 2.3C4.69 1.86 4.01 1.92 3.6 2.36l9.9 9.91 3.78-3.37z" fill="#00F076"/></svg>
         <span class="txt"><small>Disponible sur</small><strong>Google Play</strong></span>
+        <svg class="finger" viewBox="0 0 64 44" aria-hidden="true"><rect x="26" y="5" width="34" height="34" rx="13"/><rect x="2" y="16" width="40" height="12" rx="6"/><rect x="30" y="3" width="12" height="12" rx="5"/></svg>
       </a>
     </div>
 
