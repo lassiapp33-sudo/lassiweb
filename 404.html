@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LASSİ</title>
+  <style>
+    body { margin: 0; background: #14152A; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; }
+    .box { text-align: center; color: #EDEEF7; max-width: 360px; }
+    .logo { color: #FDCF34; font-size: 30px; font-weight: 800; letter-spacing: 1px; }
+    h2 { margin: 18px 0 0; font-size: 18px; }
+    p { color: #9A9EC4; margin-top: 12px; font-size: 14px; line-height: 20px; }
+    a.btn { display: none; margin-top: 24px; background: #FDCF34; color: #14152A; padding: 14px 28px; border-radius: 14px; font-weight: bold; text-decoration: none; }
+  </style>
+  <script>
+    (function () {
+      var path = window.location.pathname || '';
+      var SUPABASE_URL = 'https://tsdemraszwtbzgtyjzum.supabase.co';
+
+      // Route lien de partage prestataire : /p/{slug}
+      var m = path.match(/^\/p\/([^\/?#]+)/);
+      if (!m) {
+        // Tout autre 404 → accueil
+        window.location.replace('/');
+        return;
+      }
+
+      var slug = decodeURIComponent(m[1]);
+      var deepLink = 'lassiapp://p/' + slug;
+
+      // Log du clic (best-effort, ne bloque pas la redirection)
+      try {
+        var src = new URLSearchParams(window.location.search).get('src') || 'direct';
+        fetch(SUPABASE_URL + '/functions/v1/log-clic-partage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: slug, source: src }),
+          keepalive: true,
+        }).catch(function () {});
+      } catch (e) {}
+
+      // Tente d'ouvrir l'app (si installée mais Universal Link non déclenché)
+      window.location.href = deepLink;
+
+      // App absente → store selon l'OS après un court délai
+      setTimeout(function () {
+        var ua = navigator.userAgent || '';
+        var isIOS = /iPhone|iPad|iPod/.test(ua);
+        var isAndroid = /Android/.test(ua);
+        var storeUrl = isIOS
+          ? 'https://apps.apple.com/app/id6802453488'
+          : isAndroid
+          ? 'https://play.google.com/store/apps/details?id=com.lassiapp.lassiapp'
+          : 'https://lassi.tech';
+
+        document.getElementById('msg').textContent =
+          "L'application LASSİ n'est pas encore installée.";
+        var btn = document.getElementById('store');
+        btn.href = storeUrl;
+        btn.style.display = 'inline-block';
+        try { localStorage.setItem('lassi_pending_slug', slug); } catch (e) {}
+      }, 1400);
+    })();
+  </script>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">LASSİ</div>
+    <h2 id="msg">Ouverture de la boutique…</h2>
+    <p>Vous allez être redirigé automatiquement.</p>
+    <a id="store" class="btn">Installer LASSİ</a>
+  </div>
+</body>
+</html>
