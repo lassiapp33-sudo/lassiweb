@@ -12,6 +12,14 @@
     p { color: #9A9EC4; margin-top: 12px; font-size: 14px; line-height: 20px; }
     a.btn { display: none; margin-top: 24px; background: #FDCF34; color: #14152A; padding: 14px 28px; border-radius: 14px; font-weight: bold; text-decoration: none; }
   </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">LASSİ</div>
+    <h2 id="msg">Ouverture de la boutique…</h2>
+    <p id="sub">Redirection en cours…</p>
+    <a id="store" class="btn">Télécharger LASSİ</a>
+  </div>
   <script>
     (function () {
       var path = window.location.pathname || '';
@@ -26,7 +34,6 @@
       }
 
       var slug = decodeURIComponent(m[1]);
-      var deepLink = 'lassiapp://p/' + slug;
 
       // Log du clic (best-effort, ne bloque pas la redirection)
       try {
@@ -39,36 +46,46 @@
         }).catch(function () {});
       } catch (e) {}
 
-      // Tente d'ouvrir l'app (si installée mais Universal Link non déclenché)
-      window.location.href = deepLink;
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/.test(ua);
 
-      // App absente → store selon l'OS après un court délai
-      setTimeout(function () {
-        var ua = navigator.userAgent || '';
-        var isIOS = /iPhone|iPad|iPod/.test(ua);
-        var isAndroid = /Android/.test(ua);
-        var storeUrl = isIOS
-          ? 'https://apps.apple.com/app/id6802453488'
-          : isAndroid
-          ? 'https://play.google.com/store/apps/details?id=com.lassiapp.lassiapp'
-          : 'https://lassi.tech';
+      var iosStore = 'https://apps.apple.com/app/id6802453488';
+      var androidStore = 'https://play.google.com/store/apps/details?id=com.lassiapp.lassiapp';
+      var storeUrl = isIOS ? iosStore : androidStore;
 
-        document.getElementById('msg').textContent =
-          "L'application LASSİ n'est pas encore installée.";
+      // Bouton store visible tout de suite (secours si l'auto-redirection est bloquée)
+      if (isIOS || isAndroid) {
         var btn = document.getElementById('store');
         btn.href = storeUrl;
         btn.style.display = 'inline-block';
-        try { localStorage.setItem('lassi_pending_slug', slug); } catch (e) {}
-      }, 1400);
+      }
+
+      if (isAndroid) {
+        // intent:// : ouvre l'app si installée, sinon bascule sur le Play Store.
+        // Ne provoque JAMAIS de page blanche (contrairement au schéma custom nu).
+        window.location.replace(
+          'intent://p/' + encodeURIComponent(slug) +
+          '#Intent;scheme=lassiapp;package=com.lassiapp.lassiapp;' +
+          'S.browser_fallback_url=' + encodeURIComponent(androidStore) + ';end'
+        );
+        return;
+      }
+
+      if (isIOS) {
+        // L'Universal Link (AASA /p/*) ouvre déjà l'app si elle est installée.
+        // Si on arrive ici, l'app est absente → App Store directement.
+        // (On n'ouvre PAS lassiapp:// : sur iOS ça vide la page → écran blanc.)
+        window.location.replace(iosStore);
+        return;
+      }
+
+      // Desktop / autre → invite à ouvrir sur mobile
+      document.getElementById('msg').textContent = 'Ouvrez ce lien sur votre téléphone';
+      document.getElementById('sub').textContent =
+        "Ouvrez le lien sur mobile pour découvrir la boutique dans l'app LASSİ.";
     })();
   </script>
-</head>
-<body>
-  <div class="box">
-    <div class="logo">LASSİ</div>
-    <h2 id="msg">Ouverture de la boutique…</h2>
-    <p>Vous allez être redirigé automatiquement.</p>
-    <a id="store" class="btn">Installer LASSİ</a>
-  </div>
 </body>
 </html>
